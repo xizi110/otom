@@ -16,13 +16,24 @@ public abstract class AbstractStatementHandler implements StatementHandler {
 
 
     public static ColumnDefinition getColumnDefinition(String tableName, String columnName) {
-        String key = (tableName + ":" + columnName).replaceAll("\"", "");
-        return columnDefinitionMap.get(key.toUpperCase(Locale.ROOT));
+        String key = buildKey(tableName, columnName);
+        return columnDefinitionMap.get(key);
     }
 
     public static void putColumnDefinition(String tableName, String columnName, ColumnDefinition columnDefinition) {
-        String key = (tableName + ":" + columnName).replaceAll("\"", "");
-        columnDefinitionMap.put(key.toUpperCase(Locale.ROOT), columnDefinition);
+        String key = buildKey(tableName, columnName);
+        columnDefinitionMap.put(key, columnDefinition);
+    }
+
+    /**
+     * 使用(表名:列名)构造map的key，去除多余的双引号和反引号，并且key统一为大写字母
+     *
+     * @param tableName  表名
+     * @param columnName 列名
+     * @return key
+     */
+    private static String buildKey(String tableName, String columnName) {
+        return (tableName + ":" + columnName).replaceAll("[`\"]", "").toUpperCase(Locale.ROOT);
     }
 
 }
