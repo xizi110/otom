@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2024/1/8 18:45
  * @description
  */
-public class CreateTableStatementHandler extends AbstractStatementHandler {
+public class CreateTableStatementHandler extends AbstractStatementHandler<CreateTable> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CreateTableStatementHandler.class);
 
@@ -42,5 +42,10 @@ public class CreateTableStatementHandler extends AbstractStatementHandler {
         LOG.debug("列名{}，原始类型为{}，转换后类型为{}", columnDefinition.getColumnName(), originType, mysqlType);
         // 放入map，以备后续使用
         putColumnDefinition(createTable.getTable().getName(), columnDefinition.getColumnName(), columnDefinition);
+    }
+
+    @Override
+    public Class<CreateTable> statementClass() {
+        return CreateTable.class;
     }
 }

@@ -1,13 +1,19 @@
 package com.github.otom;
 
-import net.sf.jsqlparser.JSQLParserException;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import com.github.otom.domain.ConfigInfo;
 import com.github.otom.domain.DataType;
 import com.github.otom.domain.DataTypeMapping;
+import com.github.otom.exception.OtomException;
+import com.github.otom.handler.AbstractStatementHandler;
 import com.github.otom.listener.WriteFileStatementListener;
+import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.statement.Statement;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -60,9 +66,33 @@ public class Oracle2MySQLConverter {
     }
 
     private void initConfig(Properties properties) {
+        initTypeMappings(properties);
+        initHandlers(properties);
+    }
+
+    private void initHandlers(Properties properties) {
+        String handlers = properties.getProperty("handlers");
+        if (handlers == null) {
+            throw new OtomException("缺失handlers属性");
+        }
+        try {
+            for (String handlerClass : handlers.split(",")) {
+                Class<?> clazz = Class.forName(handlerClass);
+                Object obj = clazz.getConstructor().newInstance();
+                if (obj instanceof AbstractStatementHandler<? extends Statement> statementHandler) {
+                    Class<? extends Statement> statementClass = statementHandler.statementClass();
+                    ConfigInfo.putHandler(statementClass, statementHandler);
+                }
+            }
+        } catch (Exception e) {
+            throw new OtomException(e);
+        }
+    }
+
+    private void initTypeMappings(Properties properties) {
         String typeMappings = properties.getProperty("typeMappings");
         if (typeMappings == null) {
-            throw new RuntimeException("typeMappingTable.properties配置文件没有配置typeMappings属性");
+            throw new OtomException("缺失typeMappings属性");
         }
         String[] typePairs = typeMappings.split(";");
         List<DataTypeMapping> dataTypeMappingList = new ArrayList<>(typePairs.length);
@@ -70,7 +100,7 @@ public class Oracle2MySQLConverter {
             // 忽略空格
             String[] typePairArr = typePair.replaceAll(" ", "").split("\\|");
             if (typePairArr.length != 2) {
-                throw new RuntimeException("typeMappings属性值格式不正确，使用|分割类型，多个类型对之间使用\";\"分割");
+                throw new OtomException("typeMappings属性值格式不正确，使用|分割类型，多个类型对之间使用\";\"分割");
             }
             DataType source = buildDataType(typePairArr[0]);
             DataType target = buildDataType(typePairArr[1]);

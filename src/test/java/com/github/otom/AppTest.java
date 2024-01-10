@@ -11,7 +11,7 @@ public class AppTest extends TestCase {
 
 
     public void testCreateTable() throws Exception {
-        Oracle2MySQLConverter sqlConverter = new Oracle2MySQLConverter(getClass().getResourceAsStream("/typeMappingTable.properties"));
+        Oracle2MySQLConverter sqlConverter = new Oracle2MySQLConverter(getClass().getResourceAsStream("/config.properties"));
         sqlConverter.convertToMySQL(new File("mysql-temp.sql"), getClass().getResourceAsStream("/oracle_test_create_table.sql"));
     }
 }

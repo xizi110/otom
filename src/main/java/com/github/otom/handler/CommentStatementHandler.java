@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * @date 2024/1/8 18:47
  * @description
  */
-public class CommentStatementHandler extends AbstractStatementHandler {
+public class CommentStatementHandler extends AbstractStatementHandler<Comment> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommentStatementHandler.class);
 
@@ -44,5 +44,10 @@ public class CommentStatementHandler extends AbstractStatementHandler {
 
     private String tableCommentHandler(Comment comment) {
         return String.format("ALTER TABLE %s COMMENT '%s';", comment.getTable().getName(), comment.getComment().getValue());
+    }
+
+    @Override
+    public Class<Comment> statementClass() {
+        return Comment.class;
     }
 }
