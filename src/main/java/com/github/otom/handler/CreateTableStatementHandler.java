@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2024/1/8 18:45
  * @description
  */
-public class CreateTableStatementHandler extends AbstractStatementHandler<CreateTable> {
+public class CreateTableStatementHandler extends AbstractStatementHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(CreateTableStatementHandler.class);
 

@@ -3,6 +3,7 @@ package com.github.otom.listener;
 import com.github.otom.domain.ConfigInfo;
 import com.github.otom.handler.DefaultStatementHandler;
 import com.github.otom.handler.StatementHandler;
+import com.github.otom.util.StatementHandlerLoader;
 import net.sf.jsqlparser.parser.StatementListener;
 import net.sf.jsqlparser.statement.Statement;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ public abstract class AbstractStatementListener implements StatementListener {
 
     @Override
     public void accept(Statement statement) {
-        StatementHandler statementHandler = ConfigInfo.getHandler(statement.getClass());
+        StatementHandler statementHandler = StatementHandlerLoader.getHandler(statement.getClass());
         if (statementHandler == null) {
             LOG.warn("No available handler found for {}，use the default handler {}", statement.getClass(), DefaultStatementHandler.class);
             statementHandler = ConfigInfo.DEFAULT_STATEMENT_HANDLER;

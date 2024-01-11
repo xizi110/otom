@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * @date 2024/1/8 18:47
  * @description
  */
-public class CommentStatementHandler extends AbstractStatementHandler<Comment> {
+public class CommentStatementHandler extends AbstractStatementHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommentStatementHandler.class);
 

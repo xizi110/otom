@@ -4,11 +4,9 @@ import com.github.otom.domain.ConfigInfo;
 import com.github.otom.domain.DataType;
 import com.github.otom.domain.DataTypeMapping;
 import com.github.otom.exception.OtomException;
-import com.github.otom.handler.AbstractStatementHandler;
 import com.github.otom.listener.WriteFileStatementListener;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
-import net.sf.jsqlparser.statement.Statement;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,26 +65,6 @@ public class Oracle2MySQLConverter {
 
     private void initConfig(Properties properties) {
         initTypeMappings(properties);
-        initHandlers(properties);
-    }
-
-    private void initHandlers(Properties properties) {
-        String handlers = properties.getProperty("handlers");
-        if (handlers == null) {
-            throw new OtomException("缺失handlers属性");
-        }
-        try {
-            for (String handlerClass : handlers.split(",")) {
-                Class<?> clazz = Class.forName(handlerClass);
-                Object obj = clazz.getConstructor().newInstance();
-                if (obj instanceof AbstractStatementHandler<? extends Statement> statementHandler) {
-                    Class<? extends Statement> statementClass = statementHandler.statementClass();
-                    ConfigInfo.putHandler(statementClass, statementHandler);
-                }
-            }
-        } catch (Exception e) {
-            throw new OtomException(e);
-        }
     }
 
     private void initTypeMappings(Properties properties) {

@@ -1,6 +1,5 @@
 package com.github.otom.handler;
 
-import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 
 import java.util.LinkedHashMap;
@@ -11,7 +10,7 @@ import java.util.Locale;
  * @date 2024/1/8 18:50
  * @description
  */
-public abstract class AbstractStatementHandler<T extends Statement> implements StatementHandler {
+public abstract class AbstractStatementHandler implements StatementHandler {
 
     private static final LinkedHashMap<String, ColumnDefinition> columnDefinitionMap = new LinkedHashMap<>();
 
@@ -36,9 +35,4 @@ public abstract class AbstractStatementHandler<T extends Statement> implements S
     private static String buildKey(String tableName, String columnName) {
         return (tableName + ":" + columnName).replaceAll("[`\"]", "").toUpperCase(Locale.ROOT);
     }
-
-    /**
-     * @return 返回需要处理的Statement class
-     */
-    public abstract Class<T> statementClass();
 }

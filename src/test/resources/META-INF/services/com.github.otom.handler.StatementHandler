@@ -1,0 +1,4 @@
+com.github.otom.handler.AlterStatementHandler
+com.github.otom.handler.CommentStatementHandler
+com.github.otom.handler.CreateTableStatementHandler
+com.github.otom.handler.DefaultStatementHandler

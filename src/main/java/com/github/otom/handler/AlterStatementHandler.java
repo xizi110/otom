@@ -17,7 +17,7 @@ import java.util.List;
  * @date 2024/1/9 16:46
  * @description
  */
-public class AlterStatementHandler extends AbstractStatementHandler<Alter> {
+public class AlterStatementHandler extends AbstractStatementHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(AlterStatementHandler.class);
 

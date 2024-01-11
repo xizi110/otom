@@ -9,4 +9,9 @@ import net.sf.jsqlparser.statement.Statement;
  */
 public interface StatementHandler {
     String handle(Statement statement);
+
+    /**
+     * @return 返回需要处理的Statement class
+     */
+    Class<?> statementClass();
 }
