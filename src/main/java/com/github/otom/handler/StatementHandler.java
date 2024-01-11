@@ -1,5 +1,6 @@
 package com.github.otom.handler;
 
+import com.github.otom.converter.DataTypeConverter;
 import net.sf.jsqlparser.statement.Statement;
 
 /**
@@ -8,7 +9,7 @@ import net.sf.jsqlparser.statement.Statement;
  * @description
  */
 public interface StatementHandler {
-    String handle(Statement statement);
+    String handle(Statement statement, DataTypeConverter converter);
 
     /**
      * @return 返回需要处理的Statement class

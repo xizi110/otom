@@ -1,6 +1,6 @@
 package com.github.otom.listener;
 
-import com.github.otom.domain.ConfigInfo;
+import com.github.otom.converter.DataTypeConverter;
 import com.github.otom.handler.DefaultStatementHandler;
 import com.github.otom.handler.StatementHandler;
 import com.github.otom.util.StatementHandlerLoader;
@@ -18,15 +18,22 @@ public abstract class AbstractStatementListener implements StatementListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractStatementListener.class);
 
+    private static final DefaultStatementHandler DEFAULT_STATEMENT_HANDLER = new DefaultStatementHandler();
+    private final DataTypeConverter converter;
+
+    public AbstractStatementListener(DataTypeConverter converter) {
+        this.converter = converter;
+    }
+
     @Override
     public void accept(Statement statement) {
         StatementHandler statementHandler = StatementHandlerLoader.getHandler(statement.getClass());
         if (statementHandler == null) {
             LOG.warn("No available handler found for {}，use the default handler {}", statement.getClass(), DefaultStatementHandler.class);
-            statementHandler = ConfigInfo.DEFAULT_STATEMENT_HANDLER;
+            statementHandler = DEFAULT_STATEMENT_HANDLER;
         }
         handleBefore(statement, statementHandler);
-        String result = statementHandler.handle(statement);
+        String result = statementHandler.handle(statement, converter);
         handleComplete(result);
     }
 

@@ -1,5 +1,6 @@
 package com.github.otom.handler;
 
+import com.github.otom.converter.DataTypeConverter;
 import net.sf.jsqlparser.statement.Statement;
 
 /**
@@ -9,7 +10,7 @@ import net.sf.jsqlparser.statement.Statement;
  */
 public class DefaultStatementHandler extends AbstractStatementHandler {
     @Override
-    public String handle(Statement statement) {
+    public String handle(Statement statement, DataTypeConverter converter) {
         return statement + ";";
     }
 

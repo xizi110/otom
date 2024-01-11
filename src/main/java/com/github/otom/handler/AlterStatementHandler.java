@@ -1,6 +1,6 @@
 package com.github.otom.handler;
 
-import com.github.otom.util.StatementUtil;
+import com.github.otom.converter.DataTypeConverter;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.alter.Alter;
 import net.sf.jsqlparser.statement.alter.AlterExpression;
@@ -20,10 +20,12 @@ import java.util.List;
 public class AlterStatementHandler extends AbstractStatementHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(AlterStatementHandler.class);
+    private DataTypeConverter converter;
 
     @Override
-    public String handle(Statement statement) {
+    public String handle(Statement statement, DataTypeConverter converter) {
         Alter alter = (Alter) statement;
+        this.converter = converter;
         for (AlterExpression alterExpression : alter.getAlterExpressions()) {
             AlterOperation operation = alterExpression.getOperation();
             if (operation == AlterOperation.MODIFY) {
@@ -64,7 +66,7 @@ public class AlterStatementHandler extends AbstractStatementHandler {
             // 修改列定义
             for (AlterExpression.ColumnDataType columnDataType : colDataTypeList) {
                 ColDataType colDataType = columnDataType.getColDataType();
-                StatementUtil.convertDataType(colDataType);
+                converter.convert(colDataType);
             }
         }
         return alter + ";";

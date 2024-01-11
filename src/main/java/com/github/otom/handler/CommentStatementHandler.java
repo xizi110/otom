@@ -1,5 +1,6 @@
 package com.github.otom.handler;
 
+import com.github.otom.converter.DataTypeConverter;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
@@ -18,7 +19,7 @@ public class CommentStatementHandler extends AbstractStatementHandler {
     private static final Logger LOG = LoggerFactory.getLogger(CommentStatementHandler.class);
 
     @Override
-    public String handle(Statement statement) {
+    public String handle(Statement statement, DataTypeConverter converter) {
         Comment comment = (Comment) statement;
         Table table = comment.getTable();
         // 表注释

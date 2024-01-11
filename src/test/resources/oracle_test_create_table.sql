@@ -566,7 +566,7 @@ create table XF_FX_FWDTRADE
   orgLegFlag char(1),
   ratelock CHAR(1) default '0',
   tranCode VARCHAR2(60),
-  lastdate date
+  lastdate timestamp
 );
 comment on table XF_FX_FWDTRADE
   is '代客远期交易表';
@@ -843,10 +843,10 @@ create table XF_FX_ORDERLOG
   MASTERCHECKNAME   VARCHAR2(50),
   PTEXERATE         NUMBER(18,8),
   SLEXERATE         NUMBER(18,8),
-  PTEXEPRICEDATE    DATE,
-  SLEXEPRICEDATE    DATE,
-  PTEXEACTDATE      DATE,
-  SLEXEACTDATE      DATE,
+  PTEXEPRICEDATE    timestamp,
+  SLEXEPRICEDATE    timestamp,
+  PTEXEACTDATE      timestamp,
+  SLEXEACTDATE      timestamp,
   BOOKINGID         VARCHAR2(15) not null,
   ORDER1JUDGERATE   NUMBER(18,8),
   ORDER2JUDGERATE   NUMBER(18,8),
@@ -1794,7 +1794,7 @@ create table XF_FX_SPOTTRADE
   FOREXTYPE char(1),
   tranCode VARCHAR2(60),
   ratelock char(1) default '0',
-  lastdate date
+  lastdate timestamp
 )
 ;
 comment on table XF_FX_SPOTTRADE
